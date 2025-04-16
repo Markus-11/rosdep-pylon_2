@@ -1,6 +1,7 @@
-uri: 'https://github.com/Markus-11/pylon-packages/releases/download/v1.1/pylon-8.0.0-linux-aarch64_debs.tar
+uri: 'https://github.com/Markus-11/pylon-packages/releases/download/v1.1/pylon-8.0.0-linux-aarch64_debs.tar'
 
 md5sum: a71db16798264d13c08688b3b536e8c9
+
 install-script: |
   #!/bin/bash
   if ( [ "${PYLON_ROOT}" != "" ] && [ -d "${PYLON_ROOT}" ] ); then
@@ -33,13 +34,22 @@ install-script: |
   pkg=pylon-${version}-linux-${pkgarch}_debs.tar
   url="https://github.com/Markus-11/pylon-packages/releases/download/v1.1/${pkg}"
 
+ # Download the .tar file
   wget --no-check-certificate -O $pkg $url
+
+  # Extract the .tar file
+  tar -xvf $pkg -C /tmp/pylon_debs
+
+  # Install all .deb packages
   SUDO=
   if [ "$(id -u)" -ne 0 ]; then
     SUDO=sudo
   fi
+ 
   $SUDO dpkg -i $pkg
   $SUDO udevadm control --reload-rules || true
+  rm -rf /tmp/pylon_debs
+
 
 check-presence-script: |
   #!/bin/bash
@@ -48,18 +58,18 @@ check-presence-script: |
     if [[ ! -z "$FOUND" ]]; then
       for pylon_install in "$FOUND"; do
         MAJOR=`${pylon_install} --version-major`
-        if [ "$MAJOR" = "6" ]; then
-          echo "Found a pylon Installation with version 6 or greater"
+        if [ "$MAJOR" = "8" ]; then
+          echo "Found a Pylon installation with version 8 or greater"
           exit 0
         fi
       done
     fi
-    echo "Could not find any pylon Installation with version 6 or greater"
+    echo "Could not find any Pylon installation with version 8 or greater"
     exit 1
   else
     if [ -d "${PYLON_ROOT}" ]; then
       MAJOR=`${PYLON_ROOT}/bin/pylon-config --version-major`
-      if [ "$MAJOR" = "6" ]; then
+      if [ "$MAJOR" = "8" ]; then
         exit 0
       else
         echo "Found an existing Pylon installation in PYLON_ROOT but the version is too low"
@@ -71,3 +81,4 @@ check-presence-script: |
       exit 1
     fi
   fi
+
