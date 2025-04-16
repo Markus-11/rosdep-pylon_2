@@ -1,4 +1,7 @@
+---
 pylon:
   ubuntu:
     source:
-      uri: "https://raw.githubusercontent.com/Markus-11/rosdep-pylon_2/refs/heads/feature/ros2/pylon_packages.rdmanifest"
+      uri: >
+        https://raw.githubusercontent.com/Markus-11/rosdep-pylon_2/refs/heads/feature/ros2/pylon_packages.rdmanifest
+        
