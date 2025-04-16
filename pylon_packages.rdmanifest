@@ -31,8 +31,8 @@ install-script: |
   fi
 
   
-  pkg=pylon-${version}-linux-${pkgarch}_debs.tar
-  url="https://github.com/Markus-11/pylon-packages/releases/download/v1.1/${pkg}"
+  pkg= "pylon-8.0.0-linux-aarch64_debs.tar"
+  url= "https://github.com/Markus-11/pylon-packages/releases/download/v1.1/${pkg}"
 
  # Download the .tar file
   wget --no-check-certificate -O $pkg $url
