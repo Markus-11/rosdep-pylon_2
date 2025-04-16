@@ -6,7 +6,7 @@ install-script: |
   #!/bin/bash
   set -e
 
-  pkg_name= "pylon-supplementary-package-for-blaze-1.7.2.f00d43816_arm64.deb"
+  pkg_name="pylon-supplementary-package-for-blaze-1.7.2.f00d43816_arm64.deb"
   url="https://github.com/Markus-11/pylon-packages/releases/download/v1.2/$pkg_name"
 
   # Download the .deb package if it doesn't exist

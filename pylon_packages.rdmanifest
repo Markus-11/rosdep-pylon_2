@@ -31,13 +31,14 @@ install-script: |
   fi
 
   
-  pkg= "pylon-8.0.0-linux-aarch64_debs.tar"
-  url= "https://github.com/Markus-11/pylon-packages/releases/download/v1.1/${pkg}"
+  pkg="pylon-8.0.0-linux-aarch64_debs.tar"
+  url="https://github.com/Markus-11/pylon-packages/releases/download/v1.1/${pkg}"
 
  # Download the .tar file
   wget --no-check-certificate -O $pkg $url
 
   # Extract the .tar file
+  mkdir -p /tmp/pylon_debs
   tar -xvf $pkg -C /tmp/pylon_debs
 
   # Install all .deb packages
@@ -46,9 +47,10 @@ install-script: |
     SUDO=sudo
   fi
  
-  $SUDO dpkg -i $pkg
+  $SUDO dpkg -i /tmp/pylon_debs/*.deb
   $SUDO udevadm control --reload-rules || true
   rm -rf /tmp/pylon_debs
+  rm -f $pkg
 
 
 check-presence-script: |
