@@ -1,0 +1,40 @@
+uri: 'https://github.com/Markus-11/pylon-packages/releases/download/v1.2/pylon-supplementary-package-for-blaze-1.7.2.f00d43816_arm64.deb'
+
+md5sum: df41600634ca08cb5082877eb64220c9
+
+install-script: |
+  #!/bin/bash
+  set -e
+
+  pkg_name="pylon-supplementary-package-for-blaze-1.7.2.f00d43816_arm64.deb"
+  url="https://github.com/Markus-11/pylon-packages/releases/download/v1.2/$pkg_name"
+
+  # Download the .deb package if it doesn't exist
+  if [ ! -f "$pkg_name" ]; then
+    echo "Downloading $pkg_name..."
+    wget --no-check-certificate -O "$pkg_name" "$url"
+  fi
+
+  # Install the .deb package
+  SUDO=""
+  if [ "$(id -u)" -ne 0 ]; then 
+    SUDO=sudo
+  fi
+  $SUDO dpkg -i "$pkg_name"
+
+  DOC_PATH="/opt/pylon/share/pylon/doc/blaze"
+  if [ -d "$DOC_PATH" ]; then
+    find "$DOC_PATH" -name "*.gz" -exec gunzip -kf {} \;
+  fi
+
+  # Reload udev if needed (optional)
+  $SUDO udevadm control --reload-rules || true
+
+check-presence-script: |
+  #!/bin/bash
+  # Check for presence of a known file from the package
+  if [ -f "/usr/share/applications/basler-blazeViewer.desktop" ]; then
+    exit 0
+  else
+    exit 1
+  fi
